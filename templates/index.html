@@ -1,13 +1,42 @@
 <!doctype html>
 <html>
     <head>
-        <title>{{.StrMeal}}</title>
+        <title>Meal App</title>
+        <script
+            src="https://unpkg.com/htmx.org@2.0.2"
+            integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
-        <h1>{{.StrMeal}}</h1>
-        <p>Category: {{.StrCategory}}</p>
-        <p>Area: {{.StrArea}}</p>
-        <h2>Instructions:</h2>
-        <p>{{.StrInstructions}}</p>
+        <div>
+            <h2>Random Meal</h2>
+            <form hx-post="/random-meal/" hx-target="#meal">
+                <input type="submit" value="Random" />
+            </form>
+        </div>
+
+        <div>
+            <form hx-post="/search-meal/" hx-target="#meal">
+                <label for="fname">Meal Name</label><br />
+                <input
+                    type="text"
+                    id="meal-name"
+                    name="meal-name"
+                    value=""
+                /><br />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        {{block "Meal_list" . }}
+        <div id="meal">
+            <h1>{{.StrMeal}}</h1>
+            <p>Category: {{.StrCategory}}</p>
+            <p>Area: {{.StrArea}}</p>
+            <h2>Instructions:</h2>
+            <p>{{.StrInstructions}}</p>
+        </div>
+        {{end}}
     </body>
 </html>
