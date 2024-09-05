@@ -17,97 +17,72 @@ type MealResponse struct {
 	} `json:"meals"`
 }
 
-func mealHandler(w http.ResponseWriter, r *http.Request) {
-	// Fetch data from the URL
-	resp, err := http.Get("https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata")
+// Fetch meal data from API and decode it
+func fetchMealData(url string) (MealResponse, error) {
+	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return MealResponse{}, err
 	}
 	defer resp.Body.Close()
 
-	// Parse the JSON response
 	var mealData MealResponse
 	err = json.NewDecoder(resp.Body).Decode(&mealData)
 	if err != nil {
-		log.Fatal(err)
+		return MealResponse{}, err
 	}
 
-	// Create and parse the template
-	tmpl, err := template.ParseFiles("./templates/index.html")
+	return mealData, nil
+}
+
+func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) error {
+	t, err := template.ParseFiles("./templates/index.html")
+	if err != nil {
+		return err
+	}
+	return t.ExecuteTemplate(w, tmpl, data)
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	mealData, err := fetchMealData("https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Execute the template with the meal data
-	err = tmpl.Execute(w, mealData.Meals[0])
+	err = renderTemplate(w, "Meal_list", mealData.Meals[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func randomMealHander(w http.ResponseWriter, r *http.Request) {
-	// Fetch data from the URL
-	resp, err := http.Get("https://www.themealdb.com/api/json/v1/1/random.php")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	// Parse the JSON response
-	var mealData MealResponse
-	err = json.NewDecoder(resp.Body).Decode(&mealData)
+func randomRecipeHandler(w http.ResponseWriter, r *http.Request) {
+	mealData, err := fetchMealData("https://www.themealdb.com/api/json/v1/1/random.php")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create and parse the template
-	tmpl, err := template.ParseFiles("./templates/index.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Execute the template with the meal data
-	err = tmpl.ExecuteTemplate(w, "Meal_list", mealData.Meals[0])
+	err = renderTemplate(w, "Meal_list", mealData.Meals[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func searchMealHander(w http.ResponseWriter, r *http.Request) {
+func searchRecipeHandler(w http.ResponseWriter, r *http.Request) {
 	mealName := r.PostFormValue("meal-name")
-
-	resp, err := http.Get("https://www.themealdb.com/api/json/v1/1/search.php?s=" + mealName)
+	mealData, err := fetchMealData("https://www.themealdb.com/api/json/v1/1/search.php?s=" + mealName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer resp.Body.Close()
-
-	// Parse the JSON response
-	var mealData MealResponse
-	err = json.NewDecoder(resp.Body).Decode(&mealData)
+	err = renderTemplate(w, "Meal_list", mealData.Meals[0])
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Create and parse the template
-	tmpl, err := template.ParseFiles("./templates/index.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Execute the template with the meal data
-	err = tmpl.ExecuteTemplate(w, "Meal_list", mealData.Meals[0])
-	if err != nil {
-		log.Fatal(err)
-	}
-
 }
 
 func main() {
-	http.HandleFunc("/", mealHandler)
-	http.HandleFunc("/random-meal/", randomMealHander)
-	http.HandleFunc("/search-meal/", searchMealHander)
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/random-meal/", randomRecipeHandler)
+	http.HandleFunc("/search-meal/", searchRecipeHandler)
 	log.Println("Server starting on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
