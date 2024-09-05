@@ -1,11 +1,11 @@
-package meal
+package models
 
 type MealResponse struct {
 	Meals []Meal `json:"meals"`
 }
 
 type Meal struct {
-	IDMeal          string `json:"idMeal"`
+	IdMeal          string `json:"idMeal"`
 	StrMeal         string `json:"strMeal"`
 	StrCategory     string `json:"strCategory"`
 	StrArea         string `json:"strArea"`
