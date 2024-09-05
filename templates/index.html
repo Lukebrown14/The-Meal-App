@@ -7,36 +7,48 @@
             integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
             crossorigin="anonymous"
         ></script>
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
-    <body>
-        <div>
-            <h2>Random Meal</h2>
-            <form hx-post="/random-meal/" hx-target="#meal">
-                <input type="submit" value="Random" />
-            </form>
+    <body class="font-mono p-8">
+        <div class="flex" id="topBar">
+            <h1 class="text-4xl underline decoration-wavy text-left">
+                RECIPES
+            </h1>
+            <div class="text-left">
+                <form hx-post="/random-meal/" hx-target="#meal">
+                    <input type="submit" value="Random" />
+                </form>
+            </div>
         </div>
 
-        <div>
-            <form hx-post="/search-meal/" hx-target="#meal">
-                <label for="fname">Meal Name</label><br />
-                <input
-                    type="text"
-                    id="meal-name"
-                    name="meal-name"
-                    value=""
-                /><br />
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+        <div class="text-center">
+            <div>
+                <form hx-post="/search-meal/" hx-target="#meal">
+                    <input
+                        type="text"
+                        id="meal-name"
+                        name="meal-name"
+                        value=""
+                    /><br />
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
 
-        {{block "Meal_list" . }}
-        <div id="meal">
-            <h1>{{.StrMeal}}</h1>
-            <p>Category: {{.StrCategory}}</p>
-            <p>Area: {{.StrArea}}</p>
-            <h2>Instructions:</h2>
-            <p>{{.StrInstructions}}</p>
+            {{block "Meal_list" . }}
+            <div id="meal">
+                <h1 class="text-3xl underline decoration-wavy p-2">
+                    {{.StrMeal}}
+                </h1>
+                <!-- <div class="flex justify-center items-center h-screen"> -->
+                <div class="p-4 flex justify-center items-center">
+                    <p class="mr-5">Category: {{.StrCategory}}</p>
+                    <p>Area: {{.StrArea}}</p>
+                </div>
+                <!-- </div> -->
+                <h2>Instructions:</h2>
+                <p>{{.StrInstructions}}</p>
+            </div>
+            {{end}}
         </div>
-        {{end}}
     </body>
 </html>
