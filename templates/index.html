@@ -7,46 +7,63 @@
             integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
             crossorigin="anonymous"
         ></script>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+        />
     </head>
-    <body class="font-mono p-8">
-        <div class="flex" id="topBar">
-            <h1 class="text-4xl underline decoration-wavy text-left">
-                RECIPES
-            </h1>
-            <div class="text-left">
-                <form hx-post="/random-meal/" hx-target="#meal">
-                    <input type="submit" value="Random" />
-                </form>
-            </div>
-        </div>
+    <body class="is-family-monospace">
+        <div class="navbar-menu p-5">
+            <div class="navbar-start is-size-1 is-underlined">RECIPES</div>
 
-        <div class="text-center">
-            <div>
-                <form hx-post="/search-meal/" hx-target="#meal">
-                    <input
-                        type="text"
-                        id="meal-name"
-                        name="meal-name"
-                        value=""
-                    /><br />
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="control">
+                        <button
+                            class="button"
+                            hx-post="/random-meal/"
+                            hx-target="#meal"
+                            type="button"
+                        >
+                            Random
+                        </button>
+                    </div>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Search Recipe"
+                            hx-post="/search-meal/"
+                            hx-target="#meal"
+                            hx-trigger="keyup[key=='Enter']"
+                        />
+                    </div>
 
-            {{block "Meal_list" . }}
-            <div id="meal">
-                <h1 class="text-3xl underline decoration-wavy p-2">
-                    {{.StrMeal}}
-                </h1>
-                <div class="p-4 flex justify-center items-center">
-                    <p class="mr-5">Category: {{.StrCategory}}</p>
-                    <p>Area: {{.StrArea}}</p>
+                    <div class="control">
+                        <button
+                            class="button"
+                            hx-post="/search-meal/"
+                            hx-target="#meal"
+                            hx-trigger="click"
+                            hx-include="#search-input"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
-                <h2>Instructions:</h2>
-                <p>{{.StrInstructions}}</p>
             </div>
-            {{end}}
         </div>
+
+        {{block "Meal_list" . }}
+        <div id="meal" class="has-text-centered p-3">
+            <h1 class="is-size-2 is-underlined">{{.StrMeal}}</h1>
+            <p class="is-size-6 pt-3">
+                Area: <strong>{{.StrArea}}</strong> Category:
+                <strong>{{.StrCategory}}</strong>
+            </p>
+            <br />
+            <p class="px-3">{{.StrInstructions}}</p>
+        </div>
+        {{end}}
     </body>
 </html>
