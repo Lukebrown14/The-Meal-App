@@ -11,7 +11,8 @@ func RandomRecipeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = utils.RenderTemplate(w, "Meal_list", mealData.Meals[0])
+
+	err = utils.RenderTemplate(w, "recipe_list", mealData.Meals[0])
 	if err != nil {
 		log.Fatal(err)
 	}
