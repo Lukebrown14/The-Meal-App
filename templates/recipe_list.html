@@ -1,5 +1,13 @@
 {{define "recipe_list"}}
 <div id="meal" class="has-text-centered p-3">
+    {{if not .StrArea }}
+    <div class="container has-text-centered">
+        <h1 class="title">Welcome to the Meal App</h1>
+        <p class="subtitle">
+            Search for a recipe or click "Random" to get started!
+        </p>
+    </div>
+    {{else}}
     <h1 class="is-size-2 is-underlined">{{.StrMeal}}</h1>
     <p class="is-size-6 pt-3">
         Area: <strong>{{.StrArea}}</strong> Category:
@@ -7,5 +15,6 @@
     </p>
     <br />
     <p class="px-3">{{.StrInstructions}}</p>
+    {{end}}
 </div>
 {{end}}
