@@ -1,0 +1,41 @@
+{{define "navbar"}}
+<div class="navbar-menu p-5">
+    <div class="navbar-start is-size-1 is-underlined">RECIPES</div>
+    <div class="navbar-end">
+        <div class="navbar-item">
+            <div class="control">
+                <button
+                    class="button"
+                    hx-post="/random-meal/"
+                    hx-target="#meal"
+                    type="button"
+                >
+                    Random
+                </button>
+            </div>
+            <div class="control">
+                <input
+                    id="search-input"
+                    class="input"
+                    type="text"
+                    placeholder="Search Recipe"
+                    hx-post="/search-meal/"
+                    hx-target="#meal"
+                    hx-trigger="keyup[key=='Enter']"
+                />
+            </div>
+            <div class="control">
+                <button
+                    class="button"
+                    hx-post="/search-meal/"
+                    hx-target="#meal"
+                    hx-trigger="click"
+                    hx-include="#search-input"
+                >
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
