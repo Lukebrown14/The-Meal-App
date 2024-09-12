@@ -1,14 +1,13 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
-	"recipeapp/utils"
+	"recipeapp/components"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	err := utils.RenderHome(w, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+    err := components.Index(nil).Render(r.Context(), w)
+    if err != nil {
+        http.Error(w, "Failed to render template", http.StatusInternalServerError)
+    }
 }

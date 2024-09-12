@@ -1,20 +1,19 @@
-{{define "navbar"}}
-<nav class="navbar p-5" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
+package components
+
+templ Navbar() {
+    <div class="navbar-menu p-5">
         <div class="navbar-start is-size-1 is-underlined">
-            <a class="navbar-item" hx-post="/body/" hx-target="#body"
-                >RECIPES</a
-            >
+            <a class="navbar-item" hx-post="/body/" hx-target="#mainBody">
+                RECIPES
+            </a>
         </div>
-    </div>
-    <div class="navbar-menu">
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="control">
                     <button
                         class="button"
                         hx-post="/random-meal/"
-                        hx-target="#body"
+                        hx-target="#mainBody"
                         type="button"
                     >
                         Random
@@ -27,7 +26,7 @@
                         type="text"
                         placeholder="Search Recipe"
                         hx-post="/search-meal/"
-                        hx-target="#body"
+                        hx-target="#mainBody"
                         hx-trigger="keyup[key=='Enter']"
                     />
                 </div>
@@ -35,7 +34,7 @@
                     <button
                         class="button"
                         hx-post="/search-meal/"
-                        hx-target="#body"
+                        hx-target="#mainBody"
                         hx-trigger="click"
                         hx-include="#search-input"
                     >
@@ -45,5 +44,4 @@
             </div>
         </div>
     </div>
-</nav>
-{{end}}
+}
