@@ -1,0 +1,15 @@
+package components
+
+import "recipeapp/models"
+
+templ RecipeList(meal *models.Meal) {
+    <div class="has-text-centered p-3">
+        <h1 class="is-size-2 is-underlined">{ meal.StrMeal }</h1>
+        <p class="is-size-6 pt-3">
+            Area: <strong>{ meal.StrArea }</strong> Category:
+            <strong>{ meal.StrCategory }</strong>
+        </p>
+        <br />
+        <p class="px-3">{ meal.StrInstructions }</p>
+    </div>
+}
